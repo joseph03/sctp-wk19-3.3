@@ -86,4 +86,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:${{ steps.bump_version.outputs.VERSION }}
             ${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
-#
