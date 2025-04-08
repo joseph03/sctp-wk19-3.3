@@ -11,9 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}  # Uses GH_PAT to authenticate for git push
+        uses: actions/checkout@v3
 
       - name: Set up Git user
         run: |
