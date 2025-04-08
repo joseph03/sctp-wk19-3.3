@@ -1,4 +1,4 @@
-name: Build and Push Docker Image with Auto Version Bump
+name: Build and Push Docker Image with Version 
 
 on:
   push:
