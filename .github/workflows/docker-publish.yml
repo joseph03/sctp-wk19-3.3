@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Step 8: Build and Push Docker Image (only if there was a version bump)
+      # Step 8: Build and Push Docker Image 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
