@@ -78,7 +78,7 @@ jobs:
 
       # Step 9: Build and Push Docker Image (only if there was a version bump)
       - name: Build and Push Docker Image
-        if: steps.check_other_files.outcome == 'success'  # Only build if there were other changes besides VERSION
+        #if: steps.check_other_files.outcome == 'success'  # Only build if there were other changes besides VERSION
         uses: docker/build-push-action@v6
         with:
           context: .
