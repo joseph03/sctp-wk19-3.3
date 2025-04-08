@@ -22,11 +22,12 @@ jobs:
       #    chmod 600 ~/.ssh/id_rsa  # Set the correct permissions for the private key
       #    ssh-keyscan github.com >> ~/.ssh/known_hosts  # Add GitHub to known hosts for SSH
 
-      # Step 3: Set up Git user
-      - name: Set up Git user
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+      # Step 3: Set up Git user. This is used to commit and push changes 
+      # this is not needed since step 5 is removed. 
+      #- name: Set up Git user
+      #  run: |
+      #    git config user.name "github-actions[bot]"
+      #    git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Step 4: Read and bump version (major if #major in commit message)
       - name: Read and bump version (major if #major in commit message)
@@ -51,34 +52,26 @@ jobs:
           echo "$NEW_VERSION" > VERSION
           echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-      # Step 5: Check if any other files (besides VERSION) have changed
-      #- name: Check if other files have changed
-      #  id: check_other_files
-      #  run: |
-      #    git diff --exit-code VERSION || git diff --exit-code  # Will check for any changes other than the VERSION file
-
-      # Step 6: Commit and push updated VERSION file if other files have changed
+      # Step 5: Commit and push updated VERSION file but this causes infinite loop
       #- name: Commit and push updated VERSION file
-      #  if: steps.check_other_files.outcome == 'success'  # Only proceed if there are other changes besides VERSION
       #  run: |
       #    git add VERSION
       #    git commit -m "Bump version to ${{ steps.bump_version.outputs.VERSION }}"
       #    git push git@github.com:${{ github.repository }}.git HEAD:main  # Push using SSH key
 
-      # Step 7: Set up Docker Buildx for multi-platform support
+      # Step 6: Set up Docker Buildx for multi-platform support
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Step 8: Log in to DockerHub
+      # Step 7: Log in to DockerHub
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Step 9: Build and Push Docker Image (only if there was a version bump)
+      # Step 8: Build and Push Docker Image (only if there was a version bump)
       - name: Build and Push Docker Image
-        #if: steps.check_other_files.outcome == 'success'  # Only build if there were other changes besides VERSION
         uses: docker/build-push-action@v6
         with:
           context: .
